@@ -7,4 +7,6 @@ title: Cours d'initiation au développement logiciel
 
 [[Les fichiers binaires et exécutables]]
 
-[[KinGoRecap-17-11-25]]
+[[KinGoRecap1711]]
+
+[[Liens utiles]]
