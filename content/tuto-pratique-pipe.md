@@ -78,7 +78,7 @@ curl -s $URL
 
 <br>
 
-On obtient alors tout le fichier brute pas formaté et difficilement lisible :
+On obtient alors tout le fichier brute pas formaté et difficilement lisible sur une seule ligne :
 
 ```json
 ...
@@ -160,7 +160,7 @@ On obtient une longue liste avec des doublons car plusieurs employés habitent d
 
 <br>
 
-Grep cherche seulement du texte sans connaître les champs JSON structurés.
+**`grep`** cherche seulement du texte sans connaître les champs **JSON** structurés.
 Une méthode plus fiable en évitant d'utiliser **`grep`** avec seulement **`jq`** :
 
 ```sh
@@ -169,7 +169,7 @@ curl -s $URL | jq -r '.[].address.city'
 
 <br>
 
-Pour éliminer les doublons et obtenir les villes qui contiennent des employés on peut ajouter la commande **`sort`** avec l'argument **`-u`** :
+Pour éliminer les doublons on peut ajouter la commande **`sort`** avec l'argument **`-u`** :
 
 ```sh
 curl -s $URL | jq -r '.[].address.city' | sort -u
@@ -255,7 +255,7 @@ chmod +x countHouston.sh
 
 Votre **script bash** peut alors être automatisable et être utilisé dans de nouvelles combinaisons de commandes :
 ```bash
-➜  ~ ./countHouston.sh | rev
+./countHouston.sh | rev
 612
 ```
 
