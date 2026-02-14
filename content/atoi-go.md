@@ -112,8 +112,9 @@ go run ./AtoiTest.go
 [ OK ] 15 : -9223372036854775808 == -9223372036854775808
 ```
 
-Pour simplifier la gestion d'erreur, en cas d'erreur votre fonction devra retourner **`0`**.
-Cela peut arriver si la conversion est impossible, par exemple si l'utilisateur insère des lettres dans votre fonction au lieu d'un nombre.
+> [!IMPORTANT]
+> Pour simplifier la gestion d'erreur, en cas d'erreur votre fonction devra retourner **`0`**.
+> Cela peut arriver si la conversion est impossible, par exemple si l'utilisateur insère des lettres dans votre fonction au lieu d'un nombre.
 
 Reprenons le début de votre fonction **`Atoi`** :
 
