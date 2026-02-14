@@ -17,7 +17,7 @@ La **redirection** est une forme de communication entre processus et fichiers.
 
 Les programmes (et commandes) ont très souvent besoin de recevoir des données en **entrée**, pour en produire à leur tour en **sortie**.
 
-*Par exemple, un programme de tri aura besoin en **entrée** des données mélangées et produira en **sortie** les données triées.*
+*Par exemple, un programme de tri aura besoin en **entrée** des données mélangées et produira en **sortie** les données triées.*
 
 Cette **entrée** et **sortie** est matérialisée par des fichiers spéciaux, appelés des **flux de données abstraits**, respectivement `stdin` et `stdout`, pour **entrée standard** et **sortie standard**. A cela on rajoute `stderr`, une seconde sortie réservée aux messages d'erreurs.
 
@@ -176,7 +176,7 @@ zen
 #### `<` pour lire depuis un fichier
 #### `|` pour connecter la sortie d'une commande à l'entrée d'une autre
 
-Les programmes (et commandes) ne savent pas s’ils lisent depuis le clavier, un fichier ou un autre programme : ils lisent simplement depuis `stdin` et écrivent sur `stdout`.
+Les programmes (et commandes) ne savent pas si ils lisent depuis le clavier, un fichier ou un autre programme : ils lisent simplement depuis `stdin` et écrivent sur `stdout`.
 
 ## 6. Quelques fichiers spéciaux utiles
 

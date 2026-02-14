@@ -69,8 +69,6 @@ $ hexdump ./programme
 
 L’examen de fichiers binaires est utilisé dans le **débogage**, la **rétro-ingénierie** et la **criminalistique numérique**.
 
-Parfait ! J’ai corrigé **les fautes d’orthographe, les accents, les majuscules, et la précision technique sur le point d’entrée**, sans toucher à ton style ni à ton Markdown. Voici la version corrigée :
-
 ---
 
 ## Les fichiers exécutables
