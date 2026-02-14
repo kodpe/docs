@@ -5,8 +5,12 @@ title: Cours d'initiation au développement logiciel
 
 [[Les redirections]]
 
-[[Les fichiers binaires et exécutables]]
+[[tuto-pratique-pipe]]
 
 [[KinGoRecap1711]]
+
+[[Les fichiers binaires et exécutables]]
+
+[[linux-term-utils]]
 
 [[Liens utiles]]
