@@ -51,8 +51,23 @@ On aimerait savoir quelles sont les **villes** où habitent les employés, mais 
 <br>
 On récupère le contenu du fichier json avec la commande **`curl`** :
 
-```
+```bash
 curl -s https://files.jsons.live/employees/5-level/1-MB/minified.json
+```
+
+<br>
+Pour simplifier la suite on va stocker le lien du fichier dans une variable nommée **`URL`** :
+
+```bash
+URL='https://files.jsons.live/employees/5-level/1-MB/minified.json'
+```
+
+<br>
+Et on utilisera la variable **`URL`** qui contient l'url du fichier comme ceci avec un **`$`** devant :
+Le résultat est le même.
+
+```bash
+curl -s $URL
 ```
 
 <br>
@@ -67,8 +82,9 @@ work_history":[{"company":"Company 1","role":"Role 1","duration":"2 years"}],"pr
 On obtient un meilleur affichage en ajoutant après un pipe **`|`** la commande **`jq`** qui formate correctement le json, la sortie de **`curl`** devient alors l'entrée de **`jq`** :
 
 ```sh
-curl -s https://files.jsons.live/employees/5-level/1-MB/minified.json | jq 
+curl -s $URL | jq 
 ```
+
 ```json
 ...
   {
@@ -114,7 +130,7 @@ Et que la ville de chaque employé est écrite dans le champ **city** :
 Pour récupérer toutes les villes on peut utiliser la commande **`grep`** avec l'argument **`city`** :
 
 ```sh
-curl -s https://files.jsons.live/employees/5-level/1-MB/minified.json | jq | grep city
+curl -s $URL | jq | grep city
 ```
 
 <br>
@@ -135,14 +151,14 @@ Grep cherche seulement du texte sans connaître les champs JSON structurés.
 Une méthode plus fiable en évitant d'utiliser **`grep`** avec seulement **`jq`** :
 
 ```sh
-curl -s https://files.jsons.live/employees/5-level/1-MB/minified.json | jq -r '.[].address.city'
+curl -s $URL | jq -r '.[].address.city'
 ```
 
 <br>
 Pour éliminer les doublons et obtenir les villes qui contiennent des employés on peut ajouter la commande **`sort`** avec l'argument **`-u`** :
 
 ```sh
-curl -s https://files.jsons.live/employees/5-level/1-MB/minified.json | jq -r '.[].address.city' | sort -u
+curl -s $URL | jq -r '.[].address.city' | sort -u
 ```
 
 <br>
@@ -169,30 +185,23 @@ Maintenant essaye de trouver une combinaison de commandes pour trouver **combien
 ### Solutions possibles
 
 ```bash
-curl -s https://files.jsons.live/employees/5-level/1-MB/minified.json \
-| grep -o '"city":"Houston"' \
-| wc -l
+curl -s $URL | grep -o '"city":"Houston"' | wc -l
 ```
 
 ```bash
-curl -s https://files.jsons.live/employees/5-level/1-MB/minified.json | jq -r '.[].address.city' | grep Houston | wc -l
+curl -s $URL | jq -r '.[].address.city' | grep Houston | wc -l
 ```
 
 ```bash
-curl -s https://files.jsons.live/employees/5-level/1-MB/minified.json \
-| jq -r '.[].address.city' \
-| grep -c '^Houston$'
+curl -s $URL | jq -r '.[].address.city' | grep -c '^Houston$'
 ```
 
 ```bash
-curl -s https://files.jsons.live/employees/5-level/1-MB/minified.json \
-| jq '.[] | select(.address.city=="Houston") | 1' \
-| wc -l
+curl -s $URL | jq '.[] | select(.address.city=="Houston") | 1' | wc -l
 ```
 
 ```bash
-curl -s https://files.jsons.live/employees/5-level/1-MB/minified.json \
-| jq '[.[] | select(.address.city=="Houston")] | length'
+curl -s $URL | jq '[.[] | select(.address.city=="Houston")] | length'
 ```
 
 ⚠️ Les solutions utilisant **`grep`** sont moins fiables dans ce cas précis car **`grep`** n'est pas spécialisé dans le traitement de données **JSON** contrairement à **`jq`**.
@@ -206,7 +215,10 @@ Création d'un fichier **`countHouston.sh`** de **script bash** (c'est comme un 
 
 ```bash
 #!/bin/bash
-curl -s https://files.jsons.live/employees/5-level/1-MB/minified.json | jq -r '.[].address.city' | grep Houston | wc -l
+
+URL='https://files.jsons.live/employees/5-level/1-MB/minified.json'
+
+curl -s $URL | jq -r '.[].address.city' | grep Houston | wc -l
 ```
 
 Ajouter les droits d'exécution sur votre **script bash**
