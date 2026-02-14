@@ -5,12 +5,10 @@ tags:
   - wsl
   - shell
   - commandes
-title: Linux Cheatsheet
+title: Commandes linux utiles
 ---
 
-# Linux Commandes utiles
-
-#### Se repérer et se déplacer
+### Se repérer et se déplacer
 |||
 |-|-|
 **`ls`** | Affiche les fichiers et dossiers présents dans le dossier courant
@@ -29,14 +27,14 @@ title: Linux Cheatsheet
 **`man`** | Afficher le manuel d'une commande
 
 
-#### Programmation Go
+### Programmation Go
 |||
 |-|-|
 **`go`** | Compilateur go
 **`go run`** | Pour compiler
 **`go build`** | Pour compiler et exécuter
 
-#### Manipuler des fichiers
+### Manipuler des fichiers
 |||
 |-|-|
 **`find`** | Trouver des fichiers ou dossiers
@@ -51,7 +49,7 @@ title: Linux Cheatsheet
 || **`-f`** Forcer la supression sans confirmation
 **`chmod`** | Change les permissions d'un fichier ou dossier
 
-#### Manipuler des données
+### Manipuler des données
 |||
 |-|-|
 **`cat`** | Affiche le contenu d'un fichier
@@ -67,7 +65,7 @@ title: Linux Cheatsheet
 **`rev`** | Inverser le texte
 **`vim`** | Editeur de texte dans le terminal
 
-#### Gérer le système
+### Gérer le système
 |||
 |-|-|
 **`apt`** | Gérer et installer des programmes
@@ -78,7 +76,7 @@ title: Linux Cheatsheet
 **`kill`** / **`pkill`** | Tuer des processus
 **`ssh-keygen`** | Créer une clé ssh
 
-#### Utiliser Git
+### Utiliser Git
 |||
 |-|-|
 **`git clone`** | Télécharge un repo git

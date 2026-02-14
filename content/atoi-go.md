@@ -4,7 +4,7 @@ tags:
   - Go
   - algorithm
   - initiation
-title: La fonction Atoi() en Go
+title: La fonction Atoi() en Go - Tuto
 ---
 La fonction **`Atoi`** signifie **“ASCII to integer”**, c’est-à-dire que sa tâche est de **convertir une chaîne de caractères en nombre entier**.
 

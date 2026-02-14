@@ -195,7 +195,7 @@ Maintenant essaye de trouver une combinaison de commandes pour trouver **combien
 
 <br>
 
-### Descendre tout en bas pour révéler la solution
+#### Descendre tout en bas pour révéler la solution
 <div style="margin-top:2000px;"></div>
 
 <br>
@@ -263,4 +263,4 @@ Votre **script bash** peut alors être automatisable et être utilisé dans de n
 
 ### Conclusion
 
-Le pipe **`|`** et la création de **script bash** sont souvent indispensables pour réaliser des tâches puissantes ou résoudre des problèmes complexes.
+Le pipe **`|`** et la création de **script bash** sont souvent indispensables pour réaliser des tâches puissantes ou pour résoudre des problèmes complexes.
