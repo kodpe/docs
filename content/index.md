@@ -9,6 +9,8 @@ title: Cours d'initiation au développement logiciel
 
 [[KinGoRecap1711]]
 
+[[atoi-go]]
+
 [[Les fichiers binaires et exécutables]]
 
 [[linux-term-utils]]
