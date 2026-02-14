@@ -222,7 +222,8 @@ curl -s $URL | jq '.[] | select(.address.city=="Houston") | 1' | wc -l
 curl -s $URL | jq '[.[] | select(.address.city=="Houston")] | length'
 ```
 
-⚠️ Les solutions utilisant **`grep`** sont moins fiables dans ce cas précis car **`grep`** n'est pas spécialisé dans le traitement de données **JSON** contrairement à **`jq`**.
+> [!warning]
+> Les solutions utilisant **`grep`** sont moins fiables dans ce cas précis car **`grep`** n'est pas spécialisé dans le traitement de données **JSON** contrairement à **`jq`**.
 
 <br>
 
