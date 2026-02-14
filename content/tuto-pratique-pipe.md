@@ -17,6 +17,7 @@ title: Combiner des commandes - Tuto
 ### Cas pratique : Récupérer et filtrer des données JSON
 
 <br>
+
 Le **JSON** (JavaScript Object Notation) est un format de texte pour représenter des données.
 
 Exemple de fichier texte au format **JSON** :
@@ -41,14 +42,17 @@ Exemple de fichier texte au format **JSON** :
 ```
 
 <br>
+
 Pour cet exercice nous allons utiliser le fichier en ligne suivant qui contient une **liste d'employés** :
 
 **https://files.jsons.live/employees/5-level/1-MB/minified.json**
 
 <br>
+
 On aimerait savoir quelles sont les **villes** où habitent les employés, mais il y a plus de 1000 employés dans la liste donc ça serait très long de vérifier à la main chaque ville. Pour ce faire nous allons utiliser une **combinaison de commandes** dans le terminal grâce au pipe **`|`** (tube).
 
 <br>
+
 On récupère le contenu du fichier json avec la commande **`curl`** :
 
 ```bash
@@ -56,6 +60,7 @@ curl -s https://files.jsons.live/employees/5-level/1-MB/minified.json
 ```
 
 <br>
+
 Pour simplifier la suite on va stocker le lien du fichier dans une variable nommée **`URL`** :
 
 ```bash
@@ -63,6 +68,7 @@ URL='https://files.jsons.live/employees/5-level/1-MB/minified.json'
 ```
 
 <br>
+
 Et on utilisera la variable **`URL`** qui contient l'url du fichier comme ceci avec un **`$`** devant :
 Le résultat est le même.
 
@@ -71,6 +77,7 @@ curl -s $URL
 ```
 
 <br>
+
 On obtient alors tout le fichier brute pas formaté et difficilement lisible :
 
 ```json
@@ -79,6 +86,7 @@ work_history":[{"company":"Company 1","role":"Role 1","duration":"2 years"}],"pr
 ```
 
 <br>
+
 On obtient un meilleur affichage en ajoutant après un pipe **`|`** la commande **`jq`** qui formate correctement le json, la sortie de **`curl`** devient alors l'entrée de **`jq`** :
 
 ```sh
@@ -108,6 +116,7 @@ curl -s $URL | jq
 ```
 
 <br>
+
 On remarque que le fichier **JSON** est structuré de cette manière :
 
 ```json
@@ -120,6 +129,7 @@ On remarque que le fichier **JSON** est structuré de cette manière :
 ```
 
 <br>
+
 Et que la ville de chaque employé est écrite dans le champ **city** :
 
 ```json
@@ -127,6 +137,7 @@ Et que la ville de chaque employé est écrite dans le champ **city** :
 ```
 
 <br>
+
 Pour récupérer toutes les villes on peut utiliser la commande **`grep`** avec l'argument **`city`** :
 
 ```sh
@@ -134,6 +145,7 @@ curl -s $URL | jq | grep city
 ```
 
 <br>
+
 On obtient une longue liste avec des doublons car plusieurs employés habitent dans la même ville :
 
 ```json
@@ -147,6 +159,7 @@ On obtient une longue liste avec des doublons car plusieurs employés habitent d
 ```
 
 <br>
+
 Grep cherche seulement du texte sans connaître les champs JSON structurés.
 Une méthode plus fiable en évitant d'utiliser **`grep`** avec seulement **`jq`** :
 
@@ -155,6 +168,7 @@ curl -s $URL | jq -r '.[].address.city'
 ```
 
 <br>
+
 Pour éliminer les doublons et obtenir les villes qui contiennent des employés on peut ajouter la commande **`sort`** avec l'argument **`-u`** :
 
 ```sh
@@ -162,6 +176,7 @@ curl -s $URL | jq -r '.[].address.city' | sort -u
 ```
 
 <br>
+
 Voilà on a identifié toutes les villes où habitent des employés, il y en a cinq :
 
 ```json
@@ -173,15 +188,18 @@ Phoenix
 ```
 
 <br>
+
 Maintenant essaye de trouver une combinaison de commandes pour trouver **combien d'employés habitent à Houston**. Pour t'aider tu peux utiliser la commande **`wc -l`** qui permet de **compter le nombre de lignes**. 
 
 
 
 <br>
+
 ### Descendre tout en bas pour révéler la solution
 <div style="margin-top:2000px;"></div>
 
 <br>
+
 ### Solutions possibles
 
 ```bash
@@ -207,6 +225,7 @@ curl -s $URL | jq '[.[] | select(.address.city=="Houston")] | length'
 ⚠️ Les solutions utilisant **`grep`** sont moins fiables dans ce cas précis car **`grep`** n'est pas spécialisé dans le traitement de données **JSON** contrairement à **`jq`**.
 
 <br>
+
 ### Le script bash
 
 Vous pouvez mettre votre commande dans un fichier pour créer un **script bash** pour la sauvegarder et l'utiliser sans avoir besoin de la réecrire à chaque fois :
@@ -218,7 +237,7 @@ Création d'un fichier **`countHouston.sh`** de **script bash** (c'est comme un 
 
 URL='https://files.jsons.live/employees/5-level/1-MB/minified.json'
 
-curl -s $URL | jq -r '.[].address.city' | grep Houston | wc -l
+curl -s $URL | jq '[.[] | select(.address.city=="Houston")] | length'
 ```
 
 Ajouter les droits d'exécution sur votre **script bash**
@@ -241,6 +260,7 @@ Votre **script bash** peut alors être automatisable et être utilisé dans de n
 ```
 
 <br>
+
 ### Conclusion
 
 Le pipe **`|`** et la création de **script bash** sont souvent indispensables pour réaliser des tâches puissantes ou résoudre des problèmes complexes.
