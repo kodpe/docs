@@ -11,10 +11,10 @@ tags:
   - wc
   - chmod
   - rev
-title: Tutoriel : Combiner des commandes entre elles
+title: Combiner des commandes entre elles - Tutoriel
 ---
 
-# Tuto : Combiner des commandes entre elles
+# Combiner des commandes entre elles - Tutoriel
 Commandes utilisées dans ce tutoriel : **`curl`** **`jq`** **`grep`** **`sort`** **`wc`** **`chmod`** **`rev`**
 
 ### Cas pratique : Récupérer et filtrer des données JSON
