@@ -10,6 +10,7 @@ code[data-theme*=" "] span {
 [saved-theme="dark"] code[data-theme*=" "] {
   color: var(--shiki-dark);
   background-color: var(--shiki-dark-bg);
+  background-color: #17171d;
 }
 
 [saved-theme="dark"] code[data-theme*=" "] span {

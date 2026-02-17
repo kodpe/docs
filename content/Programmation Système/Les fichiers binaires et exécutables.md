@@ -5,11 +5,11 @@ tags:
   - linker
   - binaire
   - compilation
-  - confirmé
   - files
 title: Les fichiers binaires
+date: 2026-02-08
 ---
-
+> [!avance] Niveau avancé
 # Les fichiers binaires, exécutables, l'ELF, et le linker
 
 ## Les fichiers binaires

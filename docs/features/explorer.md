@@ -28,11 +28,15 @@ Component.Explorer({
   folderDefaultState: "collapsed", // default state of folders ("collapsed" or "open")
   useSavedState: true, // whether to use local storage to save "state" (which folders are opened) of explorer
   // omitted but shown later
-  sortFn: ...,
+  sortFn: (a, b) => {
+    const orderA = a.data?.frontmatter?.order ?? 999
+    const orderB = b.data?.frontmatter?.order ?? 999
+    return orderA - orderB
+  },
   filterFn: ...,
   mapFn: ...,
   // what order to apply functions in
-  order: ["filter", "map", "sort"],
+  order: ["sort"],
 })
 ```
 

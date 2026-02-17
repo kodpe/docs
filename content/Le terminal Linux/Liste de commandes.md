@@ -5,9 +5,11 @@ tags:
   - wsl
   - shell
   - commandes
-title: Commandes linux utiles
+title: Commandes utiles
+date: 2026-02-11
+permalink: /linux-term-utils
 ---
-
+> [!debutant] Niveau Débutant
 ### Se repérer et se déplacer
 |||
 |-|-|
@@ -46,7 +48,7 @@ title: Commandes linux utiles
 || **`-r`** Copier des dossiers et fichiers
 **`rm`** | Supprime des fichiers
 || **`-r`** Supprime des dossiers et fichiers
-|| **`-f`** Forcer la supression sans confirmation
+|| **`-f`** Forcer la suppression sans confirmation
 **`chmod`** | Change les permissions d'un fichier ou dossier
 
 ### Manipuler des données
@@ -62,12 +64,15 @@ title: Commandes linux utiles
 **`tr`** | Convertir ou éliminer des caractères 
 **`sed`** | Filtrer et transformer du texte
 **`yes`** | Créer un affichage en continu
+**`head`** | Afficher le début d'un fichier
+**`tail`** | Afficher la fin d'un fichier
 **`rev`** | Inverser le texte
 **`vim`** | Editeur de texte dans le terminal
 
 ### Gérer le système
 |||
 |-|-|
+**`sudo`** | Passer en super-utilisateur
 **`apt`** | Gérer et installer des programmes
 **`env`** | Afficher l'environnement
 **`date`** | Récupérer la date

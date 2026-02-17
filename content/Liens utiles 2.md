@@ -1,6 +1,8 @@
 ---
 tags:
 title: Liens utiles
+date: 2026-01-01
+draft: "true"
 ---
 ### Code syntax
 
@@ -19,6 +21,8 @@ title: Liens utiles
 **https://devhints.io/go**
 
 **https://learnxinyminutes.com/go**
+
+https://go.dev/ref/spec
 
 ### Coding challenges
 

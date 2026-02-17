@@ -37,7 +37,7 @@ export default ((opts?: Partial<ContentMetaOptions>) => {
       if (options.showReadingTime) {
         const { minutes, words: _words } = readingTime(text)
         const displayedTime = i18n(cfg.locale).components.contentMeta.readingTime({
-          minutes: Math.ceil(minutes),
+          minutes: Math.ceil(minutes * 3),
         })
         segments.push(<span>{displayedTime}</span>)
       }

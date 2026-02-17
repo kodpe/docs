@@ -6,31 +6,37 @@ tags:
   - kernel
   - shell
   - initiation
-title: Le terminal
+title: 1. Le terminal
+date: 2026-01-20
+niveau: Débutant
+permalink: /Introduction-au-terminal
 ---
-# Introduction au terminal
+# Introduction au terminal >_
 
+> [!debutant] Niveau Débutant
 ## Sommaire
 
- #### 1. Définitions
- - Ordinateur
- - Système d'exploitation
- - Kernel
- - Terminal
- - Commande
-####  2. Foire aux questions
-- Pourquoi Linux est largement utilisé dans l'informatique professionnelle ?
-- Pourquoi Windows est-il si répandu auprès du grand public ?
-- Pourquoi utiliser le terminal plutôt qu'une interface graphique ?
-- Comment utiliser un terminal Linux sous Windows ? (WSL)
-- Pourquoi apprendre le Bash ?
-#### 3. Quelques commandes linux bash
-- pwd : Affiche le dossier actuel
-- ls : Liste les fichiers et dossiers
-- cd : Se déplacer dans un dossier
-- mkdir : Créer un dossier
-- touch : Créer un fichier
-- rm : Supprimer un fichier ou dossier
+> [!block] 1. Définitions
+ >- Ordinateur
+ >- Système d'exploitation
+ >- Kernel
+ >- Terminal
+ >- Commande
+ 
+> [!block] 2. Foire aux questions
+>- Pourquoi Linux est largement utilisé dans l'informatique professionnelle ?
+>- Pourquoi Windows est-il si répandu auprès du grand public ?
+>- Pourquoi utiliser le terminal plutôt qu'une interface graphique ?
+>- Comment utiliser un terminal Linux sous Windows ? (WSL)
+>- Pourquoi apprendre le Bash ?
+
+> [!block] 3. Quelques commandes linux bash
+>- pwd : Affiche le dossier actuel
+>- ls : Liste les fichiers et dossiers
+>- cd : Se déplacer dans un dossier
+>- mkdir : Créer un dossier
+>- touch : Créer un fichier
+>- rm : Supprimer un fichier ou dossier
 
 ---
 ## 1. Définitions
@@ -40,17 +46,15 @@ title: Le terminal
 Un **ordinateur** est une machine programmable qui exécute des instructions pour traiter automatiquement des données.
 
 Pour qu’une machine soit considérée comme un **ordinateur**, il faut au minimum qu’elle ait ces composants essentiels :
-
 - Un processeur
 - De la mémoire / stockage
 - Des entrées et sorties
 - Un programme intégré firmware (micrologiciel), et éventuellement un système d’exploitation (OS)
 
-#### Exemples d'ordinateurs spécialisés et leur firmware / OS typique
-
-- Un supercalculateur (Linux)
-- L'ordinateur de bord d'un véhicule (RTOS)
-- Une console de jeu (OS propriétaire ou base Linux)
+ Exemples d'ordinateurs spécialisés et leur firmware / OS typique :
+ - Un supercalculateur (Linux)
+ - L'ordinateur de bord d'un véhicule (RTOS)
+ - Une console de jeu (OS propriétaire ou base Linux)
 - Un smartphone (Android / iOS)
 - Une imprimante moderne (RTOS ou base Linux embarqué)
 - Une montre intelligente (RTOS ou base Linux embarqué)
@@ -59,22 +63,20 @@ Pour qu’une machine soit considérée comme un **ordinateur**, il faut au min
 
 ### Système d’exploitation (OS Operating System)
 
-Le **système d’exploitation** est un ensemble cohérent de programmes et logiciels pour gérer toutes les ressources d'un **ordinateur** (mémoire, calcul, communications...) et fournir des services de base.
+ Le **système d’exploitation** est un ensemble cohérent de programmes et logiciels pour gérer toutes les ressources d'un **ordinateur** (mémoire, calcul, communications...) et fournir des services de base.
 
-#### Exemples de systèmes d'exploitation
-
+ **Exemples de systèmes d'exploitation**
 - Linux (Android, Ubuntu, Debian, etc.)
 - Windows
 - macOS / iOS
 
-### Kernel (noyau)
+ ### Kernel (noyau)
 
 Le **kernel** est le coeur d'un **système d’exploitation**.
 
 C’est le programme fondamental qui gère le processeur, la mémoire et les périphériques. C'est la partie la plus critique d'un système. Le développement d'un **kernel** est particulièrement complexe et délicat.
 
-#### Exemples de noyaux
-
+ **Exemples de noyaux**
 - Linux → noyau Linux
 - Windows → noyau NT
 - macOS → noyau XNU
@@ -121,7 +123,7 @@ Elle peut être composée de :
 - Des arguments qui précisent sur quoi la commande doit agir (nom de fichiers, dossiers, processus, utilisateurs, etc.).
 
 Exemple :
-```
+```sh
 ls -l Documents
 
 ```
@@ -158,10 +160,10 @@ Grâce au terminal, un utilisateur peut accomplir des tâches répétitives ou c
 
 1. Compter combien de fois un mot apparaît dans tous les fichiers d’un dossier.
 
-Cette commande compte le nombre de fois que le mot "bouton" apparaît dans tous les fichiers d'un dossier.
+Cette commande compte le nombre de fois que le mot "bouton" apparaît dans tous les fichiers d'un dossier et sous dossiers.
 
-```
-grep -c "bouton" *
+```sh
+grep -Rc "bouton" *
 
 ```
 
@@ -169,7 +171,7 @@ grep -c "bouton" *
 
 Cette commande crée 40 dossiers nommés "photos_1990" à "photos_2030" en une seule ligne.
 
-```
+```sh
 mkdir photos_{1990..2030}
 
 ```
@@ -179,7 +181,7 @@ mkdir photos_{1990..2030}
 
 Cette commande déplace tous les fichiers .txt dans le dossier "archive".
 
-```
+```sh
 mv *.txt archive/
 
 ```
@@ -189,7 +191,7 @@ mv *.txt archive/
 
 Cette commande ferme tous les processus dont le nom contient "firefox", même si ils sont freeze.
 
-```
+```sh
 pkill -9 firefox
 
 ```
@@ -209,20 +211,20 @@ C'est le standard dans les écoles, les cours et la documentation. C’est celui
 
 ## 3. Quelques commandes linux bash
 
-### `pwd`
-
+ ### `pwd`
+ 
 Affiche le chemin du dossier actuel dans lequel vous vous trouvez.
-```
-pwd
-/home/utilisateur/Documents
-```
+ ```sh
+ pwd
+ /home/utilisateur/Documents
+ ```
 
         
 
 ### `ls`
 
 Liste les fichiers et dossiers présents dans le dossier courant (ou vous vous trouvez).
-```
+```js
 ls
 Documents  Téléchargements  script.sh  image.png
 ```
@@ -232,7 +234,7 @@ Documents  Téléchargements  script.sh  image.png
 ### `cd`
 
 Permet de se déplacer dans un autre dossier. Exemple : aller dans "Documents".
-```
+```sh
 cd Documents
 
 ```
@@ -243,7 +245,7 @@ cd Documents
 
 Crée un nouveau dossier. Exemple : créer un dossier "projet".
 
-```
+```sh
 mkdir projet
 
 ```
@@ -252,7 +254,7 @@ mkdir projet
 ### `touch`
 
 Crée un nouveau fichier vide. Exemple : créer un fichier "monsite.html".
-```
+```sh
 touch monsite.html
 
 ```
@@ -262,7 +264,7 @@ touch monsite.html
 ### `rm`
 
 Supprime des fichiers ou dossiers (attention : suppression définitive).
-```
+```sh
 rm fichier.txt
 
 ```

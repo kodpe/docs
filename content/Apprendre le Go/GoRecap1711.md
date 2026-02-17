@@ -4,17 +4,21 @@ tags:
   - syntaxe
   - Code
 title: Aide pour le Go
+date: 2025-11-17
+permalink: /KinGoRecap1711
+sort: 2
+draft: "true"
 ---
 ```go
 /*
-    KinGoRecap 17-11-25
+    Recap 17-11-25
 	Fonctions, Arguments, Returns, Pointeurs, Bool, Modulo, variables locales et globales
 
     Pour compiler :
-    > go build KinGoRecap1711.go
+    > go build Recap.go
 
     Pour compiler et executer en meme temps:
-    > go run KinGoRecap1711.go
+    > go run Recap.go
 */
 
 package main

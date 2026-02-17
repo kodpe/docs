@@ -8,8 +8,8 @@ import * as Plugin from "./quartz/plugins"
  */
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "Kodp",
-    pageTitleSuffix: "Cours d'initiation au développement logiciel",
+    pageTitle: "Kodp.fr",
+    pageTitleSuffix: "Apprendre à coder pas à pas",
     enableSPA: true,
     enablePopovers: true,
     analytics: {

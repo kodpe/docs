@@ -1,18 +1,32 @@
 ---
-title: Cours d'initiation au développement logiciel
+title: Apprendre à coder pas à pas
+date: 2026-01-01
 ---
-[[Introduction au terminal]]
+## 💻 Go Débutant
 
-[[Les redirections]]
+- [[Presentation du Go]]
+- [[Conditions et boucles]]
+- [[La Fonction Atoi - Tuto]]
+- [[Types de variables]]
+- [[Liens utiles]]
 
-[[tuto-pratique-pipe]]
+---
+## 🐧 Terminal Linux
 
-[[KinGoRecap1711]]
+- [[Introduction au terminal]]
+- [[Les redirections]]
+- [[Combiner des commandes - Tuto]]
+- [[Liste de commandes]]
 
-[[atoi-go]]
+---
+## ⚙️ Programmation & Système
 
-[[Les fichiers binaires et exécutables]]
+- [[Les fichiers binaires et exécutables]]
 
-[[linux-term-utils]]
+---
 
-[[Liens utiles]]
+> [!debutant] Débutant : Documentation et tutoriels conçus pour une initiation progressive.
+
+> [!intermediaire] Intermédiaire : Aborde des sujets avec des explications plus détaillées et complètes.
+
+> [!avance] Avancé : Traite des sujets spécifiques et plus complexes.

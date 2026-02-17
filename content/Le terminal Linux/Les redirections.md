@@ -7,8 +7,11 @@ tags:
   - stdio
   - initiation
   - files
-title: Les redirections
+title: 2. Les redirections
+date: 2026-02-10
+permalink: /Les-redirections
 ---
+> [!debutant] Niveau Débutant
 # Les redirections dans le terminal - Partie 1
 
 ## 1. Introduction
@@ -41,56 +44,56 @@ Les **redirections** consiste à modifier la provenance ou la destination des do
 ## 2. Rediriger la sortie d'une commande vers un fichier
 
 Ici on écrit "hello" dans le `terminal`
-```
+```sh
 echo hello
 hello
 ```
 
 Ici on écrit "hello" dans un fichier `file` avec le symbole de redirection de sortie `>`
-```
+```sh
 echo hello > file
 
 ```
 
  Contenu du dossier courant
-```
+```sh
 ls
 file
 ```
 
 Contenu de `file`
-```
+```sh
 cat file
 hello
 ```
 
 Ici on ajoute "hello" à `file` avec le symbole d'ajout `>>` sans perdre ce qui y est déjà
-```
+```sh
 echo hello >> file
 
 ```
 
 Contenu de `file` actualisé
-```
+```sh
 cat file
 hello
 hello
 ```
 
 Contenu du dossier courant
-```
+```sh
 ls
 file
 ```
 
 Ici on écrit "nez" dans `file` qui existe déja, on perd ce qui était dedans
-```
+```sh
 echo nez > file
 
 ```
 
 Contenu de `file` actualisé
-```
+```sh
 cat file
 nez
 ```
@@ -99,32 +102,32 @@ nez
 ## 3. Rediriger l'entrée d'une commande avec un fichier
 
 Ici la commande cat attend qu'on écrive sur l'entrée standard `stdin`
-```
+```sh
 cat
 
 ```
 
 Ici on a lui donné "hello" en l'écrivant dans le terminal et cat a écrit "hello" sur la sortie standard `stdout` dans le terminal
-```
+```sh
 cat
 hello
 hello
 ```
 
 Ici on donne à cat le fichier `file` avec le symbole de redirection d'entrée `<`
-```
+```sh
 cat < file
 nez
 ```
 
 Ici on donne a cat `file` avec le symbole de redirection d'entrée `<` et on redirige la sortie vers un nouveau fichier `out`
-```
+```sh
 cat < file > out
 
 ```
 
 Contenu de `out`
-```
+```sh
 cat out
 nez
 ```
@@ -133,37 +136,37 @@ nez
 ## 4. Rediriger la sortie d'une commande dans l'entrée d'une autre
 
 Commande date
-```
+```sh
 date
 Fri Feb 13 02:12:49 AM CET 2026
 ```
 
 Ici date écrit dans l'entrée de la commande rev en utilisant le pipe `|` (le tube)
-```
+```sh
 date | rev
 6202 TEC MA 25:21:20 31 beF irF
 ```
 
 Ici la commande echo écrit "nez" dans l'entrée de la commande rev
-```
+```sh
 echo nez | rev
 zen
 ```
 
 Ici echo écrit "nez" dans l'entrée de la commande date, date n’utilise pas l’entrée standard, donc le pipe n’a aucun effet
-```
+```sh
 echo nez | date
 Fri Feb 13 02:12:49 AM CET 2026
 ```
 
 Ici echo écrit "nez" dans l'entrée de rev qui écrit dans l'entrée de la commande wc
-```
+```sh
 echo nez | rev | wc
      1       1       4
 ```
 
 Ici echo écrit "nez" dans rev qui écrit dans rev qui écrit dans rev qui écrit dans rev qui écrit dans rev qui écrit dans rev qui écrit dans rev
-```
+```sh
 echo "nez" | rev | rev | rev | rev | rev | rev | rev
 zen
 ```
@@ -182,14 +185,4 @@ Les programmes (et commandes) ne savent pas si ils lisent depuis le clavier, un 
 
 `/dev/null` : Le trou noir, tout ce qu’on écrit dedans disparaît.
 
-`/dev/random` : Générateur aléatoire.
-
 `/dev/urandom` : Générateur pseudo-aléatoire.
-
-`/dev/stdin` : L’entrée standard du processus.
-
-`/dev/stdout` : La sortie standard du processus.
-
-`/dev/stderr` : La sortie d’erreur standard.
-
-`/dev/tty` : Le terminal courant.

@@ -11,14 +11,17 @@ tags:
   - wc
   - chmod
   - rev
-title: Combiner des commandes - Tuto
+title: 3. Combiner des commandes
+date: 2026-02-12
+permalink: /tuto-pratique-pipe
 ---
-
+> [!debutant] Niveau Débutant
+> Lecture préalable conseillée : [[Introduction au terminal]] + [[Les redirections]]
 ### Cas pratique : Récupérer et filtrer des données JSON
 
 <br>
 
-Le **JSON** (JavaScript Object Notation) est un format de texte pour représenter des données.
+> [!info] Le **JSON** (JavaScript Object Notation) est un format de texte pour représenter des données.
 
 Exemple de fichier texte au format **JSON** :
 
@@ -49,7 +52,7 @@ Pour cet exercice nous allons utiliser le fichier en ligne suivant qui contient 
 
 <br>
 
-On aimerait savoir quelles sont les **villes** où habitent les employés, mais il y a plus de 1000 employés dans la liste donc ça serait très long de vérifier à la main chaque ville. Pour ce faire nous allons utiliser une **combinaison de commandes** dans le terminal grâce au pipe **`|`** (tube).
+> [!todo] On aimerait savoir quelles sont les **villes** où habitent les employés, mais il y a plus de 1000 employés dans la liste donc ça serait très long de vérifier à la main chaque ville. Pour ce faire nous allons utiliser une **combinaison de commandes** dans le terminal grâce au pipe **`|`** (tube).
 
 <br>
 
@@ -177,7 +180,7 @@ curl -s $URL | jq -r '.[].address.city' | sort -u
 
 <br>
 
-Voilà on a identifié toutes les villes où habitent des employés, il y en a cinq :
+> [!success] Voilà on a identifié toutes les villes où habitent des employés, il y en a cinq :
 
 ```json
 Chicago
@@ -189,14 +192,14 @@ Phoenix
 
 <br>
 
-Maintenant essaye de trouver une combinaison de commandes pour trouver **combien d'employés habitent à Houston**. Pour t'aider tu peux utiliser la commande **`wc -l`** qui permet de **compter le nombre de lignes**. 
+> [!todo] Maintenant essaye de trouver une combinaison de commandes pour trouver **combien d'employés habitent à Houston**. Pour t'aider tu peux utiliser la commande **`wc -l`** qui permet de **compter le nombre de lignes**. 
 
 
 
 <br>
 
-#### Descendre tout en bas pour révéler la solution
-<div style="margin-top:2000px;"></div>
+> [!question] Descend tout en bas pour révéler la **solution**
+<div style="margin-top:1500px;"></div>
 
 <br>
 
@@ -222,8 +225,7 @@ curl -s $URL | jq '.[] | select(.address.city=="Houston") | 1' | wc -l
 curl -s $URL | jq '[.[] | select(.address.city=="Houston")] | length'
 ```
 
-> [!warning]
-> Les solutions utilisant **`grep`** sont moins fiables dans ce cas précis car **`grep`** n'est pas spécialisé dans le traitement de données **JSON** contrairement à **`jq`**.
+> [!Warning] Les solutions utilisant **`grep`** sont moins fiables dans ce cas précis car **`grep`** n'est pas spécialisé dans le traitement de données **JSON** contrairement à **`jq`**.
 
 <br>
 
@@ -241,9 +243,9 @@ URL='https://files.jsons.live/employees/5-level/1-MB/minified.json'
 curl -s $URL | jq '[.[] | select(.address.city=="Houston")] | length'
 ```
 
-Ajouter les droits d'exécution sur votre **script bash**
+Ajouter les droits d'exécution sur votre **script bash** si nécessaire
 
-```
+```sh
 chmod +x countHouston.sh
 ```
 
@@ -264,4 +266,4 @@ Votre **script bash** peut alors être automatisable et être utilisé dans de n
 
 ### Conclusion
 
-Le pipe **`|`** et la création de **script bash** sont souvent indispensables pour réaliser des tâches puissantes ou pour résoudre des problèmes complexes.
+> [!tip] Le pipe **`|`** et la création de **script bash** sont souvent indispensables pour réaliser des tâches puissantes ou pour résoudre des problèmes complexes.
