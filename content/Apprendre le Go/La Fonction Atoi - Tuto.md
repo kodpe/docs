@@ -284,18 +284,18 @@ func Atoi(s string) int {
 	var start int = 0 // début de la boucle for décalé si signe
 
 	if s[0] == '-' {
-		sign = -1
-		start = 1
+		sign = -1	// inversion de sign
+		start = 1	// on reporte le début du for si on a un signe '-'
 	}
 	if s[0] == '+' {
-		start = 1
+		start = 1	// on reporte le début du for si on a un signe '+'
 	}
 
 	for i := start; i < len(s); i++ {
-		if s[i] < '0' || s[i] > '9' {
+		if s[i] < '0' || s[i] > '9' { // invalid byte check
 			return 0
 		}
-		nb = nb * 10 + (int)(s[i] - 48)
+		nb = nb * 10 + (int)(s[i] - 48)	// conversion byte -> int
 	}
 	return nb * sign 
 	// si par exemple nb = 58
@@ -326,69 +326,3 @@ go run ./AtoiTest.go
 ```
 
 > [!tip] Utiliser des **mains de test** est une bonne pratique pour **vérifier**, **expliquer** et **démontrer** que votre code se comporte correctement. La **fiabilité d’un code** dépend souvent de la **fiabilité des tests**.
-### Code complet
-
-```go
-package main
-
-import (
-    "fmt"
-    "strconv"
-)
-
-func Atoi(s string) int {
-    var nb int
-    var sign int = 1
-    var start int = 0
-
-    if s[0] == '-' {
-        sign = -1
-        start = 1
-    }
-    if s[0] == '+' {
-        start = 1
-    }
-
-    for i := start; i < len(s); i++ {
-        if s[i] < '0' || s[i] > '9' {
-            return 0
-        }
-        nb = nb * 10 + (int)(s[i] - '0')
-    }
-    return nb * sign
-}
-
-func test(id int, s string) {
-        var you = Atoi(s)
-		
-        var std, err = strconv.Atoi(s)
-        if err != nil {
-                std = 0;
-        }
-		
-        if you == std {
-                fmt.Print("[\033[32m OK \033[0m]")
-        } else {
-                fmt.Print("[\033[31m KO \033[0m]")
-        }
-        fmt.Printf(" %02d : %d == %d\n", id, std, you)
-}
-
-func main() {
-        test(1, "1")
-        test(2, "0")
-        test(3, "123")
-        test(4, "0123")
-        test(5, "00123")
-        test(6, "123a")
-        test(7, "a123")
-        test(8, "-123")
-        test(9, "+123")
-        test(10, "-123+")
-        test(11, "--123")
-        test(12, "++123")
-        test(13, "123 456")
-        test(14, "9223372036854775807")
-        test(15, "-9223372036854775808")
-}
-```
