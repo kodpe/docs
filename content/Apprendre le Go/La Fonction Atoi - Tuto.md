@@ -5,7 +5,7 @@ tags:
   - algorithm
   - initiation
 title: 3. La fonction Atoi - Tuto
-date: 2026-02-14
+date: 2026-01-14
 sort: 1
 permalink: /atoi-go
 ---
