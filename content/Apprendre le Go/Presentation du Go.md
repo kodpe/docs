@@ -4,7 +4,7 @@ tags:
   - initiation
   - compilation
 title: 1. Présentation du Go
-date: 2026-02-16
+date: 2026-01-16
 sort: 1
 ---
 > [!debutant] Niveau Débutant

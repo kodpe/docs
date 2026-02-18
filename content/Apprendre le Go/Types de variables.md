@@ -6,7 +6,7 @@ tags:
   - variables
   - types
 title: Les types de variables
-date: 2026-02-16
+date: 2026-01-16
 sort: 1
 ---
 > [!intermediaire] Intermédiaire
