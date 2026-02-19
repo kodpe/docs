@@ -6,7 +6,6 @@ date: 2026-01-01
 
 - [[Presentation du Go]]
 - [[Conditions et boucles]]
-- [[La Fonction Atoi - Tuto]]
 - [[Types de variables]]
 - [[Liens utiles]]
 
