@@ -8,7 +8,7 @@ title: 3. La fonction Atoi - Tuto
 date: 2026-01-14
 sort: 1
 permalink: /atoi-go
-draft: "false"
+draft: "true"
 ---
 > [!debutant] Niveau Débutant
 > Lecture préalable conseillée : [[Presentation du Go]] + [[Conditions et boucles]]
