@@ -6,6 +6,7 @@ date: 2026-01-01
 
 - [[Presentation du Go]]
 - [[Conditions et boucles]]
+- [[La Fonction Atoi - Tuto]]
 - [[Types de variables]]
 - [[Liens utiles]]
 
@@ -16,6 +17,11 @@ date: 2026-01-01
 - [[Les redirections]]
 - [[Combiner des commandes - Tuto]]
 - [[Liste de commandes]]
+
+---
+## 🧠 Logique & Algorithmes
+
+- [[Créer un programme Quine]]
 
 ---
 ## ⚙️ Programmation & Système
