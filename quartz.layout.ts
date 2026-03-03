@@ -1,11 +1,29 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
 import * as Component from "./quartz/components"
 
-// components shared across all pages
+const isGraphPage = (page: any) => {
+  const slug = page.fileData.slug
+  return slug.startsWith("Games/") && slug !== "Games/index"
+}
+
+const ExplorerFiltered = Component.Explorer({
+  filterFn: (node: any) => {
+    if (node.slugSegment === "tags") return false
+    const slug = node.slug ?? node.path ?? node.filePath ?? ""
+    return !(slug === "_ghosts" || String(slug).startsWith("_ghosts/"))
+  },
+})
+
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [],
-  afterBody: [],
+  afterBody: [
+    Component.InjectBodyClass({ className: "q-graph-only", slugPrefix: "Games/" }),
+    Component.ConditionalRender({
+      component: Component.GraphFit(undefined),
+      condition: isGraphPage,
+    }),
+  ],
   footer: Component.Footer({
     links: {
       GitHub: "https://github.com/kodpe",
@@ -14,8 +32,8 @@ export const sharedPageComponents: SharedLayout = {
   }),
 }
 
-// components for pages that display a single page (e.g. a single note)
-export const defaultContentPageLayout: PageLayout = {
+// Layout normal (pages classiques)
+const normalContentLayout: PageLayout = {
   beforeBody: [
     Component.ConditionalRender({
       component: Component.Breadcrumbs(),
@@ -30,15 +48,12 @@ export const defaultContentPageLayout: PageLayout = {
     Component.MobileOnly(Component.Spacer()),
     Component.Flex({
       components: [
-        {
-          Component: Component.Search(),
-          grow: true,
-        },
+        { Component: Component.Search(), grow: true },
         { Component: Component.Darkmode() },
         { Component: Component.ReaderMode() },
       ],
     }),
-    Component.Explorer(),
+    ExplorerFiltered,
   ],
   right: [
     Component.Graph(),
@@ -47,7 +62,45 @@ export const defaultContentPageLayout: PageLayout = {
   ],
 }
 
-// components for pages that display lists of pages  (e.g. tags or folders)
+// Layout graph-only : pour toutes les pages dans /games/
+const graphOnlyLayout: PageLayout = {
+  beforeBody: [
+    Component.Graph({
+      localGraph: {
+        depth: 5,
+        enableRadial: false,
+        showTags: false,
+        focusOnHover: false,
+      },
+    })
+  ],
+  left: [],
+  right: [],
+}
+
+// Applique le bon layout selon la page
+export const defaultContentPageLayout: PageLayout = {
+  beforeBody: [
+    Component.ConditionalRender({
+      component: graphOnlyLayout.beforeBody![0],
+      condition: isGraphPage,
+    }),
+    ...normalContentLayout.beforeBody!.map((c) =>
+      Component.ConditionalRender({ component: c, condition: (p) => !isGraphPage(p) }),
+    ),
+  ],
+  left: [
+    ...normalContentLayout.left!.map((c) =>
+      Component.ConditionalRender({ component: c, condition: (p) => !isGraphPage(p) }),
+    ),
+  ],
+  right: [
+    ...normalContentLayout.right!.map((c) =>
+      Component.ConditionalRender({ component: c, condition: (p) => !isGraphPage(p) }),
+    ),
+  ],
+}
+
 export const defaultListPageLayout: PageLayout = {
   beforeBody: [Component.Breadcrumbs(), Component.ArticleTitle(), Component.ContentMeta()],
   left: [
@@ -55,14 +108,11 @@ export const defaultListPageLayout: PageLayout = {
     Component.MobileOnly(Component.Spacer()),
     Component.Flex({
       components: [
-        {
-          Component: Component.Search(),
-          grow: true,
-        },
+        { Component: Component.Search(), grow: true },
         { Component: Component.Darkmode() },
       ],
     }),
-    Component.Explorer(),
+    ExplorerFiltered,
   ],
   right: [],
 }

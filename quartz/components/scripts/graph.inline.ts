@@ -19,6 +19,9 @@ import { Group as TweenGroup, Tween as Tweened } from "@tweenjs/tween.js"
 import { registerEscapeHandler, removeAllChildren } from "./util"
 import { FullSlug, SimpleSlug, getFullSlug, resolveRelative, simplifySlug } from "../../util/path"
 import { D3Config } from "../Graph"
+// my imports
+import { SPECIAL_NODE_COLORS } from "../../graphNodeColors"
+import { GRAPH_EXTERNAL_LINKS } from "../../graphExternalLinks"
 
 type GraphicsInfo = {
   color: string
@@ -95,6 +98,15 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
       v,
     ]),
   )
+
+  // Supprimer uniquement le slug "graph"
+  for (const key of Array.from(data.keys())) {
+    // console.log(key)
+    // if (key === "graph") {
+      // data.delete(key)
+    // }
+  }
+
   const links: SimpleLinkData[] = []
   const tags: SimpleSlug[] = []
   const validLinks = new Set(data.keys())
@@ -195,6 +207,12 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
 
   // calculate color
   const color = (d: NodeData) => {
+
+    // console.log(d.id)
+
+    const special = SPECIAL_NODE_COLORS.get(String(d.id))
+    if (special) return special
+
     const isCurrent = d.id === slug
     if (isCurrent) {
       return computedStyleMap["--secondary"]
@@ -373,6 +391,8 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
 
   for (const n of graphData.nodes) {
     const nodeId = n.id
+    const isDark = document.documentElement.getAttribute("saved-theme") === "dark"
+    const customColor = isDark ? SPECIAL_NODE_COLORS.get(String(nodeId)) : undefined
 
     const label = new Text({
       interactive: false,
@@ -382,7 +402,7 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
       anchor: { x: 0.5, y: 1.2 },
       style: {
         fontSize: fontSize * 15,
-        fill: computedStyleMap["--dark"],
+        fill: customColor ?? computedStyleMap["--dark"],
         fontFamily: computedStyleMap["--bodyFont"],
       },
       resolution: window.devicePixelRatio * 4,
@@ -480,8 +500,13 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
           dragging = false
 
           // if the time between mousedown and mouseup is short, we consider it a click
-          if (Date.now() - dragStartTime < 500) {
+          if (Date.now() - dragStartTime < 250) {
             const node = graphData.nodes.find((n) => n.id === event.subject.id) as NodeData
+            const externalUrl = GRAPH_EXTERNAL_LINKS.get(String(node.id))
+            if (externalUrl) {
+              window.open(externalUrl, "_blank", "noopener,noreferrer")
+              return
+            }
             const targ = resolveRelative(fullSlug, node.id)
             window.spaNavigate(new URL(targ, window.location.toString()))
           }
@@ -490,6 +515,12 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
   } else {
     for (const node of nodeRenderData) {
       node.gfx.on("click", () => {
+        const id = String(node.simulationData.id)
+        const externalUrl = GRAPH_EXTERNAL_LINKS.get(id)
+        if (externalUrl) {
+          window.open(externalUrl, "_blank", "noopener,noreferrer")
+          return
+        }
         const targ = resolveRelative(fullSlug, node.simulationData.id)
         window.spaNavigate(new URL(targ, window.location.toString()))
       })

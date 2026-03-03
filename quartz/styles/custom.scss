@@ -1,3 +1,117 @@
 @use "./base.scss";
 
-// put your custom CSS here!
+.q-graph-only footer {
+  display: none !important;
+}
+
+/* enlève les marges pour que le graph prenne tout */
+.q-graph-only main,
+.q-graph-only .page,
+.q-graph-only .center,
+.q-graph-only .page-header {
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* graph fullscreen */
+.q-graph-only .graph {
+  height: 95vh !important;
+}
+
+/* ONLY graph */
+.q-graph-only article {
+  display: none !important;
+}
+
+/* Quartz ajoute souvent un hr + page-footer après l'article */
+.q-graph-only .center > hr,
+.q-graph-only .center > .page-footer {
+  display: none !important;
+}
+
+/* Optionnel : enlever footer site */
+.q-graph-only footer {
+  display: none !important;
+}
+
+/* Enlève le titre "Graph View" uniquement sur page graph */
+.q-graph-only .graph > h3 {
+  display: none !important;
+}
+
+/* Le graph doit être une colonne flex */
+.q-graph-only .graph {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100vh !important;
+  min-height: 0 !important;
+}
+
+/* La zone qui contient le canvas prend tout l'espace dispo */
+.q-graph-only .graph-outer {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: 100vh !important;
+  display: flex !important;
+}
+
+/* Le container du canvas s'étire */
+.q-graph-only .graph-container {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: 100% !important;
+}
+
+/* Force le canvas à suivre le conteneur malgré le style inline */
+.q-graph-only .graph-container > canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+}
+
+.q-graph-only .left.sidebar,
+.q-graph-only .right.sidebar {
+  display: none !important;
+}
+
+/* Force layout 1 colonne */
+.q-graph-only #quartz-body {
+  grid-template-columns: 1fr !important;
+}
+
+/* Désactive le bouton global/local uniquement sur page graph */
+.q-graph-only .global-graph-icon {
+  display: none !important;
+}
+
+/* Supprime le scroll uniquement sur page graph */
+.q-graph-only {
+  overflow: hidden !important;
+  height: 100vh !important;
+}
+
+///// RESIZE
+.q-graph-only .graph {
+  height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+}
+
+.q-graph-only .graph-outer,
+.q-graph-only .graph-container {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: 100% !important;
+}
+
+/* Pendant un resize : on masque le canvas pour éviter la déformation visuelle */
+body.graph-resizing .graph-container canvas {
+  opacity: 0 !important;
+}
+
+/* Optionnel: fond neutre pendant le resize */
+body.graph-resizing .graph-container {
+  background: transparent;
+}

@@ -1,0 +1,3 @@
+[[Survival]]
+[[Resident Evil]]
+[[Outlast]]

@@ -1,0 +1,6 @@
+[[Colony Management]]
+[[Business Simulation]]
+[[Factory simulation]]
+[[Government Simulation]]
+[[City Builder]]
+[[Sport Management]]

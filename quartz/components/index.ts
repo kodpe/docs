@@ -23,6 +23,8 @@ import Breadcrumbs from "./Breadcrumbs"
 import Comments from "./Comments"
 import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
+import GraphFit  from "./GraphFit"
+export { default as InjectBodyClass } from "./InjectBodyClass"
 
 export {
   ArticleTitle,
@@ -50,4 +52,5 @@ export {
   Comments,
   Flex,
   ConditionalRender,
+  GraphFit,
 }
