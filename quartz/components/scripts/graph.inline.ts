@@ -21,7 +21,8 @@ import { FullSlug, SimpleSlug, getFullSlug, resolveRelative, simplifySlug } from
 import { D3Config } from "../Graph"
 // my imports
 import { SPECIAL_NODE_COLORS } from "../../graphNodeColors"
-import { GRAPH_EXTERNAL_LINKS } from "../../graphExternalLinks"
+import { GRAPH_VIRTUAL_GAME_NODES } from "../../graphExternalLinks"
+import { GRAPH_VIRTUAL_GENRE_NODES } from "../../graphExternalLinks"
 
 type GraphicsInfo = {
   color: string
@@ -34,6 +35,9 @@ type NodeData = {
   id: SimpleSlug
   text: string
   tags: string[]
+  // ajout perso
+  externalUrl?: string
+  // isExternal?: boolean
 } & SimulationNodeDatum
 
 type SimpleLinkData = {
@@ -71,8 +75,67 @@ type TweenNode = {
   stop: () => void
 }
 
+const VIRTUAL_PREFIX = "_virtual" as const
+const gameId = (name: string) => `${VIRTUAL_PREFIX}/game/${name}` as SimpleSlug
+const genreId = (name: string) => `${VIRTUAL_PREFIX}/genre/${name}` as SimpleSlug
+const isGameId = (id: SimpleSlug) => String(id).startsWith(`${VIRTUAL_PREFIX}/game/`)
+const isGenreId = (id: SimpleSlug) => String(id).startsWith(`${VIRTUAL_PREFIX}/genre/`)
+const gameNameFromId = (id: SimpleSlug) => String(id).slice(`${VIRTUAL_PREFIX}/game/`.length)
+const genreNameFromId = (id: SimpleSlug) => String(id).slice(`${VIRTUAL_PREFIX}/genre/`.length)
+
+const DEFAULT_MODE = "DEFAULT"
+const VIRTUAL_MODE = "VIRTUAL"
+type GraphMode = "DEFAULT" | "VIRTUAL"
+let GRAPH_MODE_SL: GraphMode = DEFAULT_MODE
+const VIRTUAL_MODE_FLAG = "Games/TPS"
+const VIRTUAL_SLUG = genreId("Survival")
+
 async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
-  const slug = simplifySlug(fullSlug)
+  const realslug = simplifySlug(fullSlug)
+  let slug = simplifySlug(fullSlug)
+  GRAPH_MODE_SL = DEFAULT_MODE
+  if (realslug === VIRTUAL_MODE_FLAG) {
+    GRAPH_MODE_SL = VIRTUAL_MODE
+    slug = VIRTUAL_SLUG as SimpleSlug
+  }
+  console.warn("realslug =", realslug)
+  console.warn("slug     =", slug)
+  console.warn("mode     =", GRAPH_MODE_SL)
+
+  // --- CREATION DES VIRTUAL NODES ---
+  type VirtualNode = {
+    id: SimpleSlug
+    text: string
+    externalUrl: string
+    linksTo: SimpleSlug[]
+    isVirtualGame?: boolean
+    isVirtualGenre?: boolean
+  }
+  const virtualNodes: VirtualNode[] = []
+  for (const [gName, g] of GRAPH_VIRTUAL_GENRE_NODES.entries()) {
+    virtualNodes.push({
+      id: genreId(gName),
+      text: gName,
+      externalUrl: "",
+      linksTo: (g.genres ?? []).map(genreId),
+      isVirtualGenre: true,
+    })
+  }
+  for (const [gameName, game] of GRAPH_VIRTUAL_GAME_NODES.entries()) {
+    virtualNodes.push({
+      id: gameId(gameName),
+      text: gameName,
+      externalUrl: game.url,
+      linksTo: (game.genres ?? []).map(genreId),
+      isVirtualGame: true,
+    })
+  }
+  const virtualNodesMap = new Map<SimpleSlug, VirtualNode>(virtualNodes.map(n => [n.id, n]))
+  const externalLabel = new Map<SimpleSlug, string>(virtualNodes.map(n => [n.id, n.text]))
+  const externalUrlMap = new Map<SimpleSlug, string>(virtualNodes.map(n => [n.id, n.externalUrl]))
+  console.log(virtualNodes)
+  // --- END ---
+
   const visited = getVisited()
   removeAllChildren(graph)
 
@@ -98,18 +161,20 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
       v,
     ]),
   )
-
-  // Supprimer uniquement le slug "graph"
-  for (const key of Array.from(data.keys())) {
-    // console.log(key)
-    // if (key === "graph") {
-      // data.delete(key)
-    // }
-  }
-
   const links: SimpleLinkData[] = []
   const tags: SimpleSlug[] = []
-  const validLinks = new Set(data.keys())
+  let validLinks
+  if (GRAPH_MODE_SL === VIRTUAL_MODE) {
+    validLinks = new Set<SimpleSlug>([
+      // ...data.keys(),
+      ...virtualNodes.map(n => n.id),
+    ])
+  } else {
+    validLinks = new Set<SimpleSlug>([
+      ...data.keys(),
+      // ...virtualNodes.map(n => n.id),
+    ])
+  }
 
   const tweens = new Map<string, TweenNode>()
   for (const [source, details] of data.entries()) {
@@ -134,33 +199,79 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
     }
   }
 
+  // --- AJOUT PERSO : liens des nodes externes
+  for (const n of virtualNodes) {
+    for (const t of n.linksTo) {
+      if (validLinks.has(t)) {
+        links.push({ source: n.id, target: t })
+      }
+    }
+  }
+  //
+  // console.log(validLinks)
+  console.log(links)
+
+  // COMPUTE NEIGHBOURS
+  // console.log("COMPUTE NEIGHBOURS")
   const neighbourhood = new Set<SimpleSlug>()
   const wl: (SimpleSlug | "__SENTINEL")[] = [slug, "__SENTINEL"]
   if (depth >= 0) {
+
+    const seen = new Set<SimpleSlug>()
+
     while (depth >= 0 && wl.length > 0) {
+      // console.log("depth", depth)
+      // console.log("wl.length", wl.length)
+      // console.log("neighbourdhood.size", neighbourhood.size);
       // compute neighbours
       const cur = wl.shift()!
       if (cur === "__SENTINEL") {
         depth--
         wl.push("__SENTINEL")
       } else {
+        if (seen.has(cur)) continue // deja vu donc on passe au suivant
+        seen.add(cur) // on ajoute le deja vu
+
         neighbourhood.add(cur)
         const outgoing = links.filter((l) => l.source === cur)
         const incoming = links.filter((l) => l.target === cur)
-        wl.push(...outgoing.map((l) => l.target), ...incoming.map((l) => l.source))
+
+        for (const n of outgoing.map((l) => l.target)) {
+          if (!seen.has(n)) wl.push(n)
+        }
+        for (const n of incoming.map((l) => l.source)) {
+          if (!seen.has(n)) wl.push(n)
+        }
+        // wl.push(...outgoing.map((l) => l.target), ...incoming.map((l) => l.source))
       }
+
+      // hard cap test
+      if (wl.length > 300000) {
+        console.log("hard cap 300000 reached -> break")
+        break
+      }
+      //
+
     }
-  } else {
+  } else { // if depth == -1 (global)
     validLinks.forEach((id) => neighbourhood.add(id))
     if (showTags) tags.forEach((tag) => neighbourhood.add(tag))
   }
 
   const nodes = [...neighbourhood].map((url) => {
-    const text = url.startsWith("tags/") ? "#" + url.substring(5) : (data.get(url)?.title ?? url)
+    // const text = url.startsWith("tags/") ? "#" + url.substring(5) : (data.get(url)?.title ?? url)
+    // ajout perso
+    let text = externalLabel.get(url)
+    if (!text) {
+      text = url.startsWith("tags/") ? "#" + url.substring(5) : (data.get(url)?.title ?? url)
+    }
+    //
     return {
       id: url,
       text,
       tags: data.get(url)?.tags ?? [],
+      externalUrl: externalUrlMap.get(url),
+      // isExternal: externalUrlMap.has(url),
     }
   })
   const graphData: { nodes: NodeData[]; links: LinkData[] } = {
@@ -172,6 +283,10 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
         target: nodes.find((n) => n.id === l.target)!,
       })),
   }
+
+  // DEBUG
+  // const nodeIds = new Set(graphData.nodes.map(n => n.id))
+  // console.log(nodeIds)
 
   const width = graph.offsetWidth
   const height = Math.max(graph.offsetHeight, 250)
@@ -208,7 +323,8 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
   // calculate color
   const color = (d: NodeData) => {
 
-    // console.log(d.id)
+    console.log(d.id)
+    console.log(d)
 
     const special = SPECIAL_NODE_COLORS.get(String(d.id))
     if (special) return special
@@ -223,11 +339,26 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
     }
   }
 
+  /*
+  // DEBUG
+  const sample = graphData.links
+  .filter((l) => (l.source as any)?.id === "ext1" || (l.target as any)?.id === "ext1")
+  .slice(0, 20)
+  .map((l) => ({
+    s: (l.source as any),
+    t: (l.target as any),
+  }))
+  console.log("ext1 matching links sample", sample)
+  */
+
   function nodeRadius(d: NodeData) {
+    // console.log("graphData.links ", graphData.links.length)
     const numLinks = graphData.links.filter(
       (l) => l.source.id === d.id || l.target.id === d.id,
     ).length
-    return 2 + Math.sqrt(numLinks)
+    const radius = 2 + Math.sqrt(numLinks)
+    // console.log("id", d.id, "radius", radius, "numlinks", numLinks)
+    return radius
   }
 
   let hoveredNodeId: string | null = null
@@ -392,6 +523,7 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
   for (const n of graphData.nodes) {
     const nodeId = n.id
     const isDark = document.documentElement.getAttribute("saved-theme") === "dark"
+    // console.log("nodeId", nodeId)
     const customColor = isDark ? SPECIAL_NODE_COLORS.get(String(nodeId)) : undefined
 
     const label = new Text({
@@ -502,56 +634,85 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
           // if the time between mousedown and mouseup is short, we consider it a click
           if (Date.now() - dragStartTime < 250) {
             const node = graphData.nodes.find((n) => n.id === event.subject.id) as NodeData
-            const externalUrl = GRAPH_EXTERNAL_LINKS.get(String(node.id))
-            if (externalUrl) {
-              window.open(externalUrl, "_blank", "noopener,noreferrer")
-              return
+            if (GRAPH_MODE_SL === VIRTUAL_MODE) {
+              if (node.externalUrl) {
+                window.open(node.externalUrl, "_blank", "noopener,noreferrer")
+              }
             }
-            const targ = resolveRelative(fullSlug, node.id)
-            window.spaNavigate(new URL(targ, window.location.toString()))
+            else if (GRAPH_MODE_SL === DEFAULT_MODE) {
+              const targ = resolveRelative(fullSlug, node.id)
+              window.spaNavigate(new URL(targ, window.location.toString()))
+            }
           }
         }),
     )
   } else {
     for (const node of nodeRenderData) {
       node.gfx.on("click", () => {
-        const id = String(node.simulationData.id)
-        const externalUrl = GRAPH_EXTERNAL_LINKS.get(id)
-        if (externalUrl) {
-          window.open(externalUrl, "_blank", "noopener,noreferrer")
-          return
+        if (GRAPH_MODE_SL === VIRTUAL_MODE) {
+          const externalUrlv2 = node.simulationData.externalUrl
+          if (externalUrlv2) {
+            window.open(externalUrlv2, "_blank", "noopener,noreferrer")
+          }
         }
-        const targ = resolveRelative(fullSlug, node.simulationData.id)
-        window.spaNavigate(new URL(targ, window.location.toString()))
+        if (GRAPH_MODE_SL === DEFAULT_MODE) {
+          const targ = resolveRelative(fullSlug, node.simulationData.id)
+          window.spaNavigate(new URL(targ, window.location.toString()))
+        }
       })
     }
   }
 
+  let zoomBehaviour: any = null
+
   if (enableZoom) {
-    select<HTMLCanvasElement, NodeData>(app.canvas).call(
-      zoom<HTMLCanvasElement, NodeData>()
-        .extent([
-          [0, 0],
-          [width, height],
-        ])
-        .scaleExtent([0.25, 4])
-        .on("zoom", ({ transform }) => {
-          currentTransform = transform
-          stage.scale.set(transform.k, transform.k)
-          stage.position.set(transform.x, transform.y)
+    zoomBehaviour = zoom<HTMLCanvasElement, NodeData>()
+      .extent([
+        [0, 0],
+        [width, height],
+      ])
+      .scaleExtent([0.25, 4])
+      .on("zoom", ({ transform }) => {
+        currentTransform = transform
+        stage.scale.set(transform.k, transform.k)
+        stage.position.set(transform.x, transform.y)
 
-          // zoom adjusts opacity of labels too
-          const scale = transform.k * opacityScale
-          let scaleOpacity = Math.max((scale - 1) / 3.75, 0)
-          const activeNodes = nodeRenderData.filter((n) => n.active).flatMap((n) => n.label)
+        // zoom adjusts opacity of labels too
+        const scale = transform.k * opacityScale
+        let scaleOpacity = Math.max((scale - 1) / 3.75, 0)
+        const activeNodes = nodeRenderData.filter((n) => n.active).flatMap((n) => n.label)
 
-          for (const label of labelsContainer.children) {
-            if (!activeNodes.includes(label)) {
-              label.alpha = scaleOpacity
-            }
+        for (const label of labelsContainer.children) {
+          if (!activeNodes.includes(label)) {
+            label.alpha = scaleOpacity
           }
-        }),
-    )
+        }
+      }),
+      select<HTMLCanvasElement, NodeData>(app.canvas).call(zoomBehaviour)
+  }
+
+  function centerOnNode(nodeId: SimpleSlug, k = 1.2) {
+    const node = graphData.nodes.find((n) => n.id === nodeId)
+    if (!node || node.x == null || node.y == null) return
+
+    // IMPORTANT: toi tu affiches en (x + width/2, y + height/2)
+    const worldX = node.x + width / 2
+    const worldY = node.y + height / 2
+
+    // On veut: worldX * k + tx = width/2  => tx = width/2 - worldX*k
+    const tx = width / 2 - worldX * k
+    const ty = height / 2 - worldY * k
+
+    const t = zoomIdentity.translate(tx, ty).scale(k)
+
+    if (enableZoom && zoomBehaviour) {
+      select(app.canvas).call(zoomBehaviour.transform, t)
+    } else {
+      // fallback si zoom désactivé
+      currentTransform = t
+      stage.scale.set(k, k)
+      stage.position.set(tx, ty)
+    }
   }
 
   let stopAnimation = false
@@ -559,7 +720,7 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
     if (stopAnimation) return
     for (const n of nodeRenderData) {
       const { x, y } = n.simulationData
-      if (!x || !y) continue
+      if (x == null || y == null) continue
       n.gfx.position.set(x + width / 2, y + height / 2)
       if (n.label) {
         n.label.position.set(x + width / 2, y + height / 2)
@@ -580,11 +741,27 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
     requestAnimationFrame(animate)
   }
 
+  // Option: “slug” = page courante, ou "ext1", etc.
+  const targetId = (slug as SimpleSlug) // ou slug
+  console.log(slug)
+  requestAnimationFrame(() => {
+    simulation.tick(30)
+    centerOnNode(targetId, 1.7)
+  })
+
+    // Expose a recenter method on the graph container (DOM element)
+    ; (graph as any).__recenter = (k = 1.7, target: SimpleSlug = slug) => {
+      simulation.tick(30)
+      centerOnNode(target, k)
+    }
+
   requestAnimationFrame(animate)
   return () => {
     stopAnimation = true
+    delete (graph as any).__recenter
     app.destroy()
   }
+
 }
 
 let localGraphCleanups: (() => void)[] = []
@@ -665,11 +842,36 @@ document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
     }
   }
 
-  const containerIcons = document.getElementsByClassName("global-graph-icon")
-  Array.from(containerIcons).forEach((icon) => {
-    icon.addEventListener("click", renderGlobalGraph)
-    window.addCleanup(() => icon.removeEventListener("click", renderGlobalGraph))
-  })
+  if (GRAPH_MODE_SL === DEFAULT_MODE) {
+    const containerIcons = document.getElementsByClassName("global-graph-icon")
+    Array.from(containerIcons).forEach((icon) => {
+      icon.addEventListener("click", renderGlobalGraph)
+      window.addCleanup(() => icon.removeEventListener("click", renderGlobalGraph))
+    })
+  }
+  else if (GRAPH_MODE_SL === VIRTUAL_MODE) {
+    const containerIcons = document.getElementsByClassName("global-graph-icon")
+    function recenterLocalGraph() {
+      // On cible le premier graph local
+      const container = document.getElementsByClassName("graph-container")[0] as any
+      if (!container) return
+
+      if (typeof container.__recenter === "function") {
+        container.__recenter(1.6) // k = 1.6, cible = slug courant par défaut
+      }
+    }
+
+    Array.from(containerIcons).forEach((icon) => {
+      const handler = (e: Event) => {
+        e.preventDefault()
+        e.stopPropagation()
+        recenterLocalGraph()
+      }
+
+      icon.addEventListener("click", handler)
+      window.addCleanup(() => icon.removeEventListener("click", handler))
+    })
+  }
 
   document.addEventListener("keydown", shortcutHandler)
   window.addCleanup(() => {

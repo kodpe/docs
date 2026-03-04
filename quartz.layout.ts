@@ -67,7 +67,7 @@ const graphOnlyLayout: PageLayout = {
   beforeBody: [
     Component.Graph({
       localGraph: {
-        depth: 5,
+        depth: 20,
         enableRadial: false,
         showTags: false,
         focusOnHover: false,
