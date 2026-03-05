@@ -1,0 +1,110 @@
+{
+  "SURVIVAL": {
+    "genres": ["Action-Adventure", "SIMULATION"]
+  },
+  "Action-Adventure": {
+    "genres": ["SURVIVAL"]
+  },
+  "SIMULATION": {
+    "genres": ["SURVIVAL"]
+  },
+  "Survival-Horror": {
+    "genres": ["SURVIVAL"]
+  },
+  "Horror": {
+    "genres": ["SURVIVAL horror"]
+  },
+  "SHOOTER": {
+    "genres": ["FPS", "TPS", "SHOOT'EM UP"]
+  },
+  "TPS": {
+    "genres": [""]
+  },
+  "FPS": {
+    "genres": [""]
+  },
+  "MUSIC GAME": {
+    "genres": [""]
+  },
+  "SHOOT'EM UP": {
+    "genres": ["Rail shooter", "Bullet hell", "Scrolling shooter"]
+  },
+  "Scrolling shooter": {
+    "genres": [""]
+  },
+  "Rail shooter": {
+    "genres": [""]
+  },
+  "Bullet hell": {
+    "genres": [""]
+  },
+  "Management-CMS": {
+    "genres": ["Simulation"]
+  },
+  "Colony Management": {
+    "genres": ["Management-CMS"]
+  },
+  "Factory Simulation": {
+    "genres": ["Management-CMS"]
+  },
+  "Government Simulation": {
+    "genres": ["Management-CMS"]
+  },
+  "MMO": {
+    "genres": [""]
+  },
+  "MMORPG": {
+    "genres": ["MMO"]
+  },
+  "MOBA": {
+    "genres": ["MMO"]
+  },
+  "MMORTS": {
+    "genres": ["MMO"]
+  },
+  "MMOFPS": {
+    "genres": ["MMO"]
+  },
+  "STRATEGY": {
+    "genres": ["MOBA", "MMORTS"]
+  },
+  "RTS": {
+    "genres": ["STRATEGY"]
+  },
+  "RTT": {
+    "genres": ["STRATEGY"]
+  },
+  "TBS": {
+    "genres": ["STRATEGY"]
+  },
+  "TBT": {
+    "genres": ["STRATEGY"]
+  },
+  "4X": {
+    "genres": ["STRATEGY"]
+  },
+  "Artillery game": {
+    "genres": ["STRATEGY"]
+  },
+  "Tower Defense TD": {
+    "genres": ["RTS"]
+  },
+  "RPG": {
+    "genres": ["Action-Adventure"]
+  },
+  "ROGUELIKE-LITE": {
+    "genres": ["Action-Adventure", "RPG"]
+  },
+  "Stealth game": {
+    "genres": ["Action-Adventure"]
+  },
+  "PLATFORMER": {
+    "genres": ["Action-Adventure"]
+  },
+  "Metroidvania": {
+    "genres": ["Action-Adventure", "PLATFORMER"]
+  },
+  "SANDBOX": {
+    "genres": []
+  }
+}

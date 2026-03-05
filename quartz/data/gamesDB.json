@@ -1,0 +1,130 @@
+{
+  "Frostpunk": {
+    "genres": ["Colony Management", "SURVIVAL"],
+    "url": "https://en.wikipedia.org/wiki/Frostpunk"
+  },
+  "Don't Starve": {
+    "genres": ["SURVIVAL", "Action-Adventure"],
+    "url": "https://en.wikipedia.org/wiki/Don%27t_Starve"
+  },
+  "Subnautica": {
+    "genres": ["SURVIVAL", "Action-Adventure"],
+    "url": "https://en.wikipedia.org/wiki/Subnautica"
+  },
+  "Ark": {
+    "genres": ["SURVIVAL", "Action-Adventure", "MMORPG"],
+    "url": "https://en.wikipedia.org/wiki/Ark:_Survival_Evolved"
+  },
+  "GTA": {
+    "genres": ["Action-Adventure", "TPS"],
+    "url": "https://en.wikipedia.org/wiki/Grand_Theft_Auto"
+  },
+  "Raft": {
+    "genres": ["SURVIVAL", "SANDBOX"],
+    "url": "https://en.wikipedia.org/wiki/Raft_(video_game)"
+  },
+  "Minecraft": {
+    "genres": ["SANDBOX", "SURVIVAL"],
+    "url": "https://en.wikipedia.org/wiki/Minecraft"
+  },
+  "RimWorld": {
+    "genres": ["Colony Management", "SURVIVAL"],
+    "url": "https://en.wikipedia.org/wiki/RimWorld"
+  },
+  "PlanetBase": {
+    "genres": ["Colony Management", "SURVIVAL"],
+    "url": "https://en.wikipedia.org/wiki/Planetbase"
+  },
+  "The Survivalists": {
+    "genres": ["SURVIVAL"],
+    "url": "https://thesurvivalists.fandom.com/wiki/The_Survivalists"
+  },
+  "Tropico": {
+    "genres": ["Government Simulation"],
+    "url": "https://en.wikipedia.org/wiki/Tropico_(video_game)"
+  },
+  "WoW": {
+    "genres": ["MMORPG"],
+    "url": "https://en.wikipedia.org/wiki/World_of_Warcraft"
+  },
+  "Dofus": {
+    "genres": ["MMORPG"],
+    "url": "https://en.wikipedia.org/wiki/Dofus"
+  },
+  "PlanetSide": {
+    "genres": ["MMOFPS"],
+    "url": "https://en.wikipedia.org/wiki/PlanetSide"
+  },
+  "AirRivals": {
+    "genres": ["MMOFPS"],
+    "url": "https://en.wikipedia.org/wiki/Ace_Online"
+  },
+  "Grepolis": {
+    "genres": ["MMORTS"],
+    "url": "https://wiki.en.grepolis.com/wiki/Main_Page"
+  },
+  "OGame": {
+    "genres": ["MMORTS"],
+    "url": "https://en.wikipedia.org/wiki/OGame"
+  },
+  "Tribal Wars": {
+    "genres": ["MMORTS"],
+    "url": "https://en.wikipedia.org/wiki/Tribal_Wars"
+  },
+  "LoL": {
+    "genres": ["MOBA"],
+    "url": "https://en.wikipedia.org/wiki/League_of_Legends"
+  },
+  "Dota": {
+    "genres": ["MOBA"],
+    "url": "https://en.wikipedia.org/wiki/Dota"
+  },
+  "Factorio": {
+    "genres": ["Factory Simulation"],
+    "url": "https://en.wikipedia.org/wiki/Factorio"
+  },
+  "Resident Evil": {
+    "genres": ["Horror", "TPS"],
+    "url": "https://en.wikipedia.org/wiki/Resident_Evil"
+  },
+  "Red Dead Redemption": {
+    "genres": ["Action-Adventure", "TPS"],
+    "url": "https://en.wikipedia.org/wiki/Red_Dead_Redemption"
+  },
+  "Outlast": {
+    "genres": ["Horror"],
+    "url": "https://en.wikipedia.org/wiki/Outlast"
+  },
+  "Valheim": {
+    "genres": ["SURVIVAL"],
+    "url": "https://en.wikipedia.org/wiki/Valheim"
+  },
+  "Space Harrier": {
+    "genres": ["Rail shooter"],
+    "url": "https://en.wikipedia.org/wiki/Space_Harrier"
+  },
+  "Child of Eden": {
+    "genres": ["Rail shooter", "MUSIC GAME"],
+    "url": "https://en.wikipedia.org/wiki/Child_of_Eden"
+  },
+  "DonPachi": {
+    "genres": ["Bullet hell"],
+    "url": "https://en.wikipedia.org/wiki/DonPachi"
+  },
+  "Batsugun": {
+    "genres": ["Bullet hell", "Scrolling shooter"],
+    "url": "https://en.wikipedia.org/wiki/Batsugun"
+  },
+  "Vampire Survivors": {
+    "genres": ["Bullet hell", "ROGUELIKE-LITE"],
+    "url": "https://en.wikipedia.org/wiki/Vampire_Survivors"
+  },
+  "Roblox": {
+    "genres": ["SANDBOX"],
+    "url": "https://en.wikipedia.org/wiki/Roblox"
+  },
+  "Cuphead": {
+    "genres": ["SHOOT'EM UP", "PLATFORMER"],
+    "url": "https://en.wikipedia.org/wiki/Cuphead"
+  }
+}

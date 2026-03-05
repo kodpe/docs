@@ -20,9 +20,9 @@ import { registerEscapeHandler, removeAllChildren } from "./util"
 import { FullSlug, SimpleSlug, getFullSlug, resolveRelative, simplifySlug } from "../../util/path"
 import { D3Config } from "../Graph"
 // my imports
-import { SPECIAL_NODE_COLORS } from "../../graphNodeColors"
 import { GRAPH_VIRTUAL_GAME_NODES } from "../../graphExternalLinks"
 import { GRAPH_VIRTUAL_GENRE_NODES } from "../../graphExternalLinks"
+import { VIRTUAL_NODE_COLOR } from "../../graphExternalLinks"
 
 type GraphicsInfo = {
   color: string
@@ -37,7 +37,9 @@ type NodeData = {
   tags: string[]
   // ajout perso
   externalUrl?: string
-  // isExternal?: boolean
+  isVirtualGame?: boolean
+  isVirtualGenre?: boolean
+  //
 } & SimulationNodeDatum
 
 type SimpleLinkData = {
@@ -88,7 +90,7 @@ const VIRTUAL_MODE = "VIRTUAL"
 type GraphMode = "DEFAULT" | "VIRTUAL"
 let GRAPH_MODE_SL: GraphMode = DEFAULT_MODE
 const VIRTUAL_MODE_FLAG = "Games/TPS"
-const VIRTUAL_SLUG = genreId("Survival")
+const VIRTUAL_SLUG = genreId("SURVIVAL")
 
 async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
   const realslug = simplifySlug(fullSlug)
@@ -131,8 +133,8 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
     })
   }
   const virtualNodesMap = new Map<SimpleSlug, VirtualNode>(virtualNodes.map(n => [n.id, n]))
-  const externalLabel = new Map<SimpleSlug, string>(virtualNodes.map(n => [n.id, n.text]))
-  const externalUrlMap = new Map<SimpleSlug, string>(virtualNodes.map(n => [n.id, n.externalUrl]))
+  // const externalLabel = new Map<SimpleSlug, string>(virtualNodes.map(n => [n.id, n.text]))
+  // const externalUrlMap = new Map<SimpleSlug, string>(virtualNodes.map(n => [n.id, n.externalUrl]))
   console.log(virtualNodes)
   // --- END ---
 
@@ -259,21 +261,23 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
   }
 
   const nodes = [...neighbourhood].map((url) => {
-    // const text = url.startsWith("tags/") ? "#" + url.substring(5) : (data.get(url)?.title ?? url)
-    // ajout perso
-    let text = externalLabel.get(url)
+    const ext = virtualNodesMap.get(url)
+    let text = ext?.text
     if (!text) {
-      text = url.startsWith("tags/") ? "#" + url.substring(5) : (data.get(url)?.title ?? url)
+      text = url.startsWith("tags/")
+        ? "#" + url.substring(5)
+        : (data.get(url)?.title ?? url)
     }
-    //
     return {
       id: url,
       text,
       tags: data.get(url)?.tags ?? [],
-      externalUrl: externalUrlMap.get(url),
-      // isExternal: externalUrlMap.has(url),
+      externalUrl: ext?.externalUrl,
+      isVirtualGame: ext?.isVirtualGame ?? false,
+      isVirtualGenre: ext?.isVirtualGenre ?? false,
     }
   })
+
   const graphData: { nodes: NodeData[]; links: LinkData[] } = {
     nodes,
     links: links
@@ -320,23 +324,65 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
     {} as Record<(typeof cssVars)[number], string>,
   )
 
+  function computeDistancesFrom(start: SimpleSlug): Map<SimpleSlug, number> {
+    const dist = new Map<SimpleSlug, number>()
+    const q: SimpleSlug[] = []
+    dist.set(start, 0)
+    q.push(start)
+    while (q.length > 0) {
+      const cur = q.shift()!
+      const d = dist.get(cur)!
+      for (const l of graphData.links) {
+        const a = l.source.id
+        const b = l.target.id
+        if (a === cur && !dist.has(b)) {
+          dist.set(b, d + 1)
+          q.push(b)
+        } else if (b === cur && !dist.has(a)) {
+          dist.set(a, d + 1)
+          q.push(a)
+        }
+      }
+    }
+    return dist
+  }
+  const distFromSlug = computeDistancesFrom(slug)
+  type DistanceClass = "selected" | "adjacent" | "distant"
+  function distanceClass(id: SimpleSlug): DistanceClass {
+    const d = distFromSlug.get(id)
+    if (d === 0) return "selected"
+    if (d === 1) return "adjacent"
+    return "distant"
+  }
+
   // calculate color
   const color = (d: NodeData) => {
 
-    console.log(d.id)
-    console.log(d)
-
-    const special = SPECIAL_NODE_COLORS.get(String(d.id))
-    if (special) return special
-
-    const isCurrent = d.id === slug
-    if (isCurrent) {
-      return computedStyleMap["--secondary"]
-    } else if (visited.has(d.id) || d.id.startsWith("tags/")) {
-      return computedStyleMap["--tertiary"]
-    } else {
-      return computedStyleMap["--gray"]
+    // console.log(d)
+    if (GRAPH_MODE_SL === VIRTUAL_MODE) {
+      const cls = distanceClass(d.id)
+      if (d.isVirtualGame) {
+        if (cls === "selected") return VIRTUAL_NODE_COLOR.virt_game_selected
+        if (cls === "adjacent") return VIRTUAL_NODE_COLOR.virt_game_adjacent
+        return VIRTUAL_NODE_COLOR.virt_game_distant
+      }
+      if (d.isVirtualGenre) {
+        if (cls === "selected") return VIRTUAL_NODE_COLOR.virt_genre_selected
+        if (cls === "adjacent") return VIRTUAL_NODE_COLOR.virt_genre_adjacent
+        return VIRTUAL_NODE_COLOR.virt_genre_distant
+      }
     }
+    else if (GRAPH_MODE_SL === DEFAULT_MODE) {
+      const isCurrent = d.id === slug
+      if (isCurrent) {
+        return computedStyleMap["--secondary"]
+      } else if (visited.has(d.id) || d.id.startsWith("tags/")) {
+        return computedStyleMap["--tertiary"]
+      } else {
+        return computedStyleMap["--gray"]
+      }
+    }
+    return "#fcba03"
   }
 
   /*
@@ -523,8 +569,8 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
   for (const n of graphData.nodes) {
     const nodeId = n.id
     const isDark = document.documentElement.getAttribute("saved-theme") === "dark"
-    // console.log("nodeId", nodeId)
-    const customColor = isDark ? SPECIAL_NODE_COLORS.get(String(nodeId)) : undefined
+    // console.log("nodeId", n)
+    const customColor = isDark ? color(n) : undefined
 
     const label = new Text({
       interactive: false,
